@@ -3,12 +3,29 @@ var app =angular.module('starter', ['ionic'])
 
 app.controller('imcCtrl',function($scope){
 
-   $scope.altura = 1.70;
-   $scope.peso = 80;
-   $scope.imc = 20;
+$scope.medidas=angular.fromJson(window.localStorage['medidas'] || '[]');
 
-   $scope.status="Gordo";
-
+    $scope.altura='';
+    $scope.peso='';
+    $scope.imc=0;
+    $scope.status='sem status';
+    $scope.calcula=function(peso,altura){
+      $scope.medidas.push({'peso':peso,'altura':altura});
+      window.localStorage['medidas']=angular.toJson($scope.medidas);
+      $scope.imc=peso/(altura*altura);
+      if ($scope.imc<20){
+        $scope.status='muito magro';
+      }
+      else if ($scope.imc<23){
+        $scope.status='magro';
+      }
+      else if ($scope.imc<25){
+        $scope.status='gordo';
+      }
+      else {
+        $scope.status='muito gordo';
+      }
+    }
 
 });
 
